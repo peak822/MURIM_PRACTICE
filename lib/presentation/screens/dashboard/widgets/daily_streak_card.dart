@@ -1,0 +1,111 @@
+import 'package:flutter/material.dart';
+import 'package:murim_app/core/theme/app_colors.dart';
+import 'package:murim_app/core/theme/app_text_styles.dart';
+import 'package:murim_app/core/utils/cultivation_calculator.dart';
+import 'package:murim_app/data/models/user_stats_model.dart';
+import 'package:murim_app/presentation/widgets/wuxia_card.dart';
+
+class DailyStreakCard extends StatelessWidget {
+  final UserStats stats;
+
+  const DailyStreakCard({
+    super.key,
+    required this.stats,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final bonusMultiplier = CultivationCalculator.getStreakBonusMultiplier(stats.currentStreak);
+    final bonusPercent = ((bonusMultiplier - 1.0) * 100).toInt();
+
+    return WuxiaCard(
+      borderColor: AppColors.goldPrimary.withValues(alpha: 0.4),
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          // Fire Flame Icon with Aura
+          Container(
+            width: 54,
+            height: 54,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.goldPrimary.withValues(alpha: 0.15),
+              border: Border.all(color: AppColors.goldPrimary, width: 1.5),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.goldPrimary.withValues(alpha: 0.3),
+                  blurRadius: 12,
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.local_fire_department_rounded,
+                color: AppColors.goldPrimary,
+                size: 32,
+              ),
+            ),
+          ),
+          const SizedBox(width: 14),
+
+          // Streak info
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      '${stats.currentStreak}',
+                      style: AppTextStyles.qiCounter.copyWith(
+                        color: AppColors.goldLight,
+                        fontSize: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      'วันฝึกตนต่อเนื่อง',
+                      style: AppTextStyles.heading3.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  bonusPercent > 0
+                      ? '⚡ ได้รับโบนัสปราณ Qi +$bonusPercent% จากความสม่ำเสมอ'
+                      : 'ฝึกฝนต่อเนื่องทุกวันเพื่อรับโบนัส Qi สูงสุด +30%',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: bonusPercent > 0 ? AppColors.goldLight : AppColors.textMuted,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Longest streak badge
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                'สถิติสูงสุด',
+                style: AppTextStyles.bodySmall.copyWith(fontSize: 10),
+              ),
+              Text(
+                '${stats.longestStreak} วัน',
+                style: const TextStyle(
+                  color: AppColors.qiLight,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
