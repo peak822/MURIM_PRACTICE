@@ -207,6 +207,30 @@ class CultivationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> equipTitle(String? titleId) async {
+    _stats = _stats.copyWith(
+      equippedTitleId: titleId,
+      clearEquippedTitle: titleId == null || titleId.isEmpty,
+    );
+    await _repository.saveUserStats(_stats);
+    notifyListeners();
+  }
+
+  Future<void> recordBreakthroughEpiphany(String reflectionText) async {
+    if (reflectionText.trim().isEmpty) return;
+    final log = CultivationLog(
+      id: _uuid.v4(),
+      title: 'จารึกความรู้แจ้ง: ${_stats.currentRealm.fullThaiTitle}',
+      description: reflectionText.trim(),
+      qiGained: 0,
+      type: CultivationLogType.realmBreakthrough,
+      timestamp: DateTime.now(),
+    );
+    await _repository.addLog(log);
+    _logs.insert(0, log);
+    notifyListeners();
+  }
+
   Future<void> resetAllProgress() async {
     await _repository.resetAllData();
     await loadStats();
