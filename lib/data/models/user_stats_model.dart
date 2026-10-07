@@ -3,6 +3,7 @@ import 'cultivation_realm.dart';
 class UserStats {
   final String userName;
   final String sectName;
+  final String? equippedTitleId;
   final int bodyXp;
   final int mindXp;
   final int martialXp;
@@ -17,6 +18,7 @@ class UserStats {
   const UserStats({
     this.userName = 'จอมยุทธ์ไร้นาม',
     this.sectName = 'สำนักกระบี่ฟ้า',
+    this.equippedTitleId,
     this.bodyXp = 0,
     this.mindXp = 0,
     this.martialXp = 0,
@@ -46,6 +48,8 @@ class UserStats {
   UserStats copyWith({
     String? userName,
     String? sectName,
+    String? equippedTitleId,
+    bool clearEquippedTitle = false,
     int? bodyXp,
     int? mindXp,
     int? martialXp,
@@ -60,6 +64,7 @@ class UserStats {
     return UserStats(
       userName: userName ?? this.userName,
       sectName: sectName ?? this.sectName,
+      equippedTitleId: clearEquippedTitle ? null : (equippedTitleId ?? this.equippedTitleId),
       bodyXp: bodyXp ?? this.bodyXp,
       mindXp: mindXp ?? this.mindXp,
       martialXp: martialXp ?? this.martialXp,
@@ -77,6 +82,7 @@ class UserStats {
     return {
       'userName': userName,
       'sectName': sectName,
+      'equippedTitleId': equippedTitleId,
       'bodyXp': bodyXp,
       'mindXp': mindXp,
       'martialXp': martialXp,
@@ -94,6 +100,7 @@ class UserStats {
     return UserStats(
       userName: map['userName'] as String? ?? 'จอมยุทธ์ไร้นาม',
       sectName: map['sectName'] as String? ?? 'สำนักกระบี่ฟ้า',
+      equippedTitleId: map['equippedTitleId'] as String?,
       bodyXp: (map['bodyXp'] as num?)?.toInt() ?? 0,
       mindXp: (map['mindXp'] as num?)?.toInt() ?? 0,
       martialXp: (map['martialXp'] as num?)?.toInt() ?? 0,
