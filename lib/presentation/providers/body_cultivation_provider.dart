@@ -36,8 +36,8 @@ class BodyCultivationProvider extends ChangeNotifier {
   ExerciseCategory? _selectedCategory;
   String _searchQuery = '';
 
-  BodyCultivationProvider({required BodyCultivationRepository repository})
-      : _repository = repository {
+  BodyCultivationProvider({BodyCultivationRepository? repository})
+      : _repository = repository ?? BodyCultivationRepositoryImpl() {
     _init();
   }
 
