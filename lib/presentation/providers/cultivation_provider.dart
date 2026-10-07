@@ -198,6 +198,64 @@ class CultivationProvider extends ChangeNotifier {
     return gainedQi;
   }
 
+  /// Triggered when completing a body cultivation training session
+  Future<int> recordBodyTrainingSession({
+    required int earnedQi,
+    required int earnedBodyXp,
+  }) async {
+    if (earnedQi <= 0 && earnedBodyXp <= 0) return 0;
+
+    final int effectiveQi = CultivationCalculator.calculateEffectiveQi(
+      earnedQi,
+      _stats.currentStreak,
+    );
+
+    final oldRealm = _stats.currentRealm;
+    final int newTotalQi = _stats.totalQi + effectiveQi;
+    final int newBodyXp = _stats.bodyXp + earnedBodyXp;
+    final newRealm = CultivationRealm.fromQi(newTotalQi);
+    final bool hasBreakthrough = newRealm.level > oldRealm.level;
+
+    _stats = _stats.copyWith(
+      totalQi: newTotalQi,
+      bodyXp: newBodyXp,
+    );
+
+    await _repository.saveUserStats(_stats);
+
+    final log = CultivationLog(
+      id: _uuid.v4(),
+      title: 'บ่มเพาะกายาสำเร็จ',
+      description: 'ได้รับพลังกาย +$earnedBodyXp XP และพลังปราณ +$effectiveQi Qi',
+      qiGained: effectiveQi,
+      category: CultivationCategory.body,
+      type: CultivationLogType.missionCompleted,
+      timestamp: DateTime.now(),
+    );
+
+    await _repository.addLog(log);
+    _logs.insert(0, log);
+
+    if (hasBreakthrough) {
+      _latestBreakthroughRealm = newRealm;
+
+      final breakthroughLog = CultivationLog(
+        id: _uuid.v4(),
+        title: 'ทะลวงด่านขอบเขต: ${newRealm.fullThaiTitle}!',
+        description: newRealm.breakthroughQuote,
+        qiGained: 0,
+        type: CultivationLogType.realmBreakthrough,
+        timestamp: DateTime.now(),
+      );
+
+      await _repository.addLog(breakthroughLog);
+      _logs.insert(0, breakthroughLog);
+    }
+
+    notifyListeners();
+    return effectiveQi;
+  }
+
   Future<void> updateProfile({String? userName, String? sectName}) async {
     _stats = _stats.copyWith(
       userName: userName ?? _stats.userName,
