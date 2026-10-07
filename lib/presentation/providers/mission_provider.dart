@@ -184,6 +184,13 @@ class MissionProvider extends ChangeNotifier {
       _missions[index] = updatedMission;
       await _repository.updateMission(updatedMission);
 
+      // Revert Qi and stats
+      await cultivationProvider.revertMissionCompletion(
+        category: mission.category,
+        baseQiReward: mission.xpReward,
+        missionTitle: mission.title,
+      );
+
       notifyListeners();
       return (wasCompleted: false, gainedQi: 0, hasBreakthrough: false);
     }

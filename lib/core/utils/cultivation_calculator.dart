@@ -158,6 +158,52 @@ class CultivationCalculator {
     );
   }
 
+  /// Revert mission completion from UserStats (deducts Qi, stat XP, decrements completed count, clamped at 0)
+  static ({UserStats updatedStats, int deductedQi}) revertMissionCompletion({
+    required UserStats currentStats,
+    required CultivationCategory category,
+    required int baseQiReward,
+  }) {
+    final int deductedQi = calculateEffectiveQi(baseQiReward, currentStats.currentStreak);
+
+    int newBodyXp = currentStats.bodyXp;
+    int newMindXp = currentStats.mindXp;
+    int newMartialXp = currentStats.martialXp;
+    int newSpiritualXp = currentStats.spiritualXp;
+
+    switch (category) {
+      case CultivationCategory.body:
+        newBodyXp = math.max(0, newBodyXp - deductedQi);
+        break;
+      case CultivationCategory.mind:
+        newMindXp = math.max(0, newMindXp - deductedQi);
+        break;
+      case CultivationCategory.martial:
+        newMartialXp = math.max(0, newMartialXp - deductedQi);
+        break;
+      case CultivationCategory.spiritual:
+        newSpiritualXp = math.max(0, newSpiritualXp - deductedQi);
+        break;
+    }
+
+    final int newTotalQi = math.max(0, currentStats.totalQi - deductedQi);
+    final int newCompletedCount = math.max(0, currentStats.completedMissionsCount - 1);
+
+    final UserStats updated = currentStats.copyWith(
+      bodyXp: newBodyXp,
+      mindXp: newMindXp,
+      martialXp: newMartialXp,
+      spiritualXp: newSpiritualXp,
+      totalQi: newTotalQi,
+      completedMissionsCount: newCompletedCount,
+    );
+
+    return (
+      updatedStats: updated,
+      deductedQi: deductedQi,
+    );
+  }
+
   /// Calculate 6 Radar Chart values normalized to 0.0 - 100.0
   /// Attributes:
   /// 1. พลังกาย (Body Vigor)

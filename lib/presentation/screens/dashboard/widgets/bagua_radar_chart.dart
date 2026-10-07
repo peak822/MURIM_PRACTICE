@@ -54,6 +54,17 @@ class BaguaRadarChart extends StatelessWidget {
                   fontSize: 10,
                 ),
                 dataSets: [
+                  // 100% Scale Reference Boundary (invisible) so the chart always scales from 0 to 100
+                  RadarDataSet(
+                    fillColor: Colors.transparent,
+                    borderColor: Colors.transparent,
+                    borderWidth: 0,
+                    entryRadius: 0,
+                    dataEntries: List.generate(
+                      keys.length,
+                      (_) => const RadarEntry(value: 100),
+                    ),
+                  ),
                   RadarDataSet(
                     fillColor: primaryColor.withValues(alpha: 0.25),
                     borderColor: primaryColor,

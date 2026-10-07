@@ -191,11 +191,19 @@ class _MainShellScreenState extends State<MainShellScreen> {
                       ],
                     ),
                     const VerticalDivider(thickness: 1, width: 1, color: AppColors.divider),
-                    // Main Screen Body
-                    Expanded(child: screens[_currentIndex]),
+                    // Main Screen Body with IndexedStack to preserve state across tab switching
+                    Expanded(
+                      child: IndexedStack(
+                        index: _currentIndex,
+                        children: screens,
+                      ),
+                    ),
                   ],
                 )
-              : screens[_currentIndex],
+              : IndexedStack(
+                  index: _currentIndex,
+                  children: screens,
+                ),
           bottomNavigationBar: isDesktop
               ? null
               : BottomNavigationBar(

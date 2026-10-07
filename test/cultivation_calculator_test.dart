@@ -88,6 +88,47 @@ void main() {
     });
   });
 
+  group('CultivationCalculator - revertMissionCompletion', () {
+    test('revertMissionCompletion deducts Qi and stat XP cleanly and clamps at 0', () {
+      const initialStats = UserStats(
+        bodyXp: 100,
+        mindXp: 50,
+        totalQi: 150,
+        completedMissionsCount: 3,
+        currentStreak: 0,
+      );
+
+      final result = CultivationCalculator.revertMissionCompletion(
+        currentStats: initialStats,
+        category: CultivationCategory.mind,
+        baseQiReward: 50,
+      );
+
+      expect(result.updatedStats.mindXp, 0);
+      expect(result.updatedStats.totalQi, 100);
+      expect(result.updatedStats.completedMissionsCount, 2);
+      expect(result.deductedQi, 50);
+    });
+
+    test('revertMissionCompletion never produces negative stats', () {
+      const initialStats = UserStats(
+        bodyXp: 10,
+        totalQi: 10,
+        completedMissionsCount: 1,
+      );
+
+      final result = CultivationCalculator.revertMissionCompletion(
+        currentStats: initialStats,
+        category: CultivationCategory.body,
+        baseQiReward: 100,
+      );
+
+      expect(result.updatedStats.bodyXp, 0);
+      expect(result.updatedStats.totalQi, 0);
+      expect(result.updatedStats.completedMissionsCount, 0);
+    });
+  });
+
   group('CultivationCalculator - Radar Attributes', () {
     test('calculateRadarAttributes returns 6 valid attributes', () {
       const stats = UserStats(

@@ -129,12 +129,14 @@ class _AddMissionDialogState extends State<AddMissionDialog> {
               // Title Input
               TextField(
                 controller: _titleController,
+                maxLength: 80,
                 style: const TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
                   labelText: 'ชื่อภารกิจฝึกตน *',
                   hintText: 'เช่น อ่านตำรา AI 1 บท หรือ วิดพื้น 30 ครั้ง',
                   hintStyle: const TextStyle(color: AppColors.textMuted, fontSize: 13),
                   filled: true,
+                  counterStyle: const TextStyle(color: AppColors.textMuted, fontSize: 11),
                   fillColor: AppColors.surfaceLight.withValues(alpha: 0.4),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -151,6 +153,7 @@ class _AddMissionDialogState extends State<AddMissionDialog> {
               // Description Input
               TextField(
                 controller: _descController,
+                maxLength: 200,
                 maxLines: 2,
                 style: const TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
@@ -158,6 +161,7 @@ class _AddMissionDialogState extends State<AddMissionDialog> {
                   hintText: 'บันทึกเป้าหมายหรือรายละเอียดเพิ่มเติม...',
                   hintStyle: const TextStyle(color: AppColors.textMuted, fontSize: 13),
                   filled: true,
+                  counterStyle: const TextStyle(color: AppColors.textMuted, fontSize: 11),
                   fillColor: AppColors.surfaceLight.withValues(alpha: 0.4),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),

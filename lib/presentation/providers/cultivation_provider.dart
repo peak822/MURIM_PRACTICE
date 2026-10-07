@@ -107,6 +107,39 @@ class CultivationProvider extends ChangeNotifier {
     );
   }
 
+  /// Triggered when a mission is unchecked/reverted
+  Future<int> revertMissionCompletion({
+    required CultivationCategory category,
+    required int baseQiReward,
+    required String missionTitle,
+  }) async {
+    final result = CultivationCalculator.revertMissionCompletion(
+      currentStats: _stats,
+      category: category,
+      baseQiReward: baseQiReward,
+    );
+
+    _stats = result.updatedStats;
+    await _repository.saveUserStats(_stats);
+
+    // Add a log entry for reversion
+    final log = CultivationLog(
+      id: _uuid.v4(),
+      title: 'ยกเลิกภารกิจ: $missionTitle',
+      description: 'ปรับลดพลังปราณ -${result.deductedQi} Qi (${category.thaiTitle})',
+      qiGained: -result.deductedQi,
+      category: category,
+      type: CultivationLogType.missionCompleted,
+      timestamp: DateTime.now(),
+    );
+
+    await _repository.addLog(log);
+    _logs.insert(0, log);
+
+    notifyListeners();
+    return result.deductedQi;
+  }
+
   /// Triggered when completing a meditation / secluded cultivation session
   Future<int> recordMeditationSession({
     required int minutes,

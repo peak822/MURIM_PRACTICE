@@ -21,18 +21,25 @@ class HiveStorageService {
   Future<void> init() async {
     if (_isInitialized) return;
 
-    await Hive.initFlutter();
+    try {
+      await Hive.initFlutter();
 
-    _missionsBox = await Hive.openBox<Map>(AppConstants.missionsBoxName);
-    _userStatsBox = await Hive.openBox<Map>(AppConstants.userStatsBoxName);
-    _logsBox = await Hive.openBox<Map>(AppConstants.cultivationLogsBoxName);
-    _settingsBox = await Hive.openBox<dynamic>(AppConstants.settingsBoxName);
+      _missionsBox = await Hive.openBox<Map>(AppConstants.missionsBoxName);
+      _userStatsBox = await Hive.openBox<Map>(AppConstants.userStatsBoxName);
+      _logsBox = await Hive.openBox<Map>(AppConstants.cultivationLogsBoxName);
+      _settingsBox = await Hive.openBox<dynamic>(AppConstants.settingsBoxName);
 
-    _isInitialized = true;
+      _isInitialized = true;
 
-    // Seed default starter missions and stats if empty
-    if (_missionsBox.isEmpty) {
-      await _seedInitialData();
+      // Seed default starter missions and stats ONLY on very first install/launch
+      final bool hasSeeded = _settingsBox.get('has_seeded_initial_data', defaultValue: false);
+      if (!hasSeeded) {
+        await _seedInitialData();
+        await _settingsBox.put('has_seeded_initial_data', true);
+      }
+    } catch (e, stack) {
+      debugPrint('Error initializing HiveStorageService: $e\n$stack');
+      _isInitialized = true;
     }
   }
 
@@ -191,5 +198,6 @@ class HiveStorageService {
     await _userStatsBox.clear();
     await _logsBox.clear();
     await _seedInitialData();
+    await _settingsBox.put('has_seeded_initial_data', true);
   }
 }
