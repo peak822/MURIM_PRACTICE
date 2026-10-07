@@ -86,10 +86,12 @@ class _MeditationScreenState extends State<MeditationScreen> with SingleTickerPr
           content: Row(
             children: [
               const Icon(Icons.self_improvement_rounded, color: AppColors.jadeLight),
-              const SizedBox(width: 8),
-              Text(
-                'ปิดด่านสำเร็จ! ได้รับพลังปราณบริสุทธิ์ +$gainedQi Qi',
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'ปิดด่านสำเร็จ! ได้รับพลังปราณบริสุทธิ์ +$gainedQi Qi',
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                ),
               ),
             ],
           ),
@@ -130,73 +132,81 @@ class _MeditationScreenState extends State<MeditationScreen> with SingleTickerPr
               constraints: const BoxConstraints(maxWidth: 800),
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(
-                  horizontal: isDesktop ? 32 : 16,
+                  horizontal: isDesktop ? 32 : 20,
                   vertical: 24,
                 ),
                 child: Column(
                   children: [
-                    // Title
-                    Text(
-                      'ห้องปิดด่านฝึกตน (Secluded Cultivation)',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.heading1.copyWith(
-                        color: AppColors.goldLight,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    // Screen Title & Subtitle
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.self_improvement_rounded, color: AppColors.qiLight, size: 24),
+                        const SizedBox(width: 8),
+                        Text(
+                          'ห้องปิดด่านฝึกตน (Secluded Cultivation)',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.heading1.copyWith(
+                            color: AppColors.goldLight,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'กำหนดลมหายใจ ทำสมาธิ หรือโฟกัสกับการอ่านหนังสือเพื่อกลั่นปราณบริสุทธิ์',
+                      'กำหนดลมหายใจ ทำสมาธิ หรือโฟกัสกับการศึกษาตำราเพื่อกลั่นพลังปราณบริสุทธิ์',
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.bodyMedium,
+                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 36),
 
-                    // Breathing Qi Orb & Timer
+                    // Breathing Qi Orb & Timer Display
                     AnimatedBuilder(
                       animation: _pulseController,
                       builder: (context, child) {
-                        final scale = _isRunning ? 1.0 + (_pulseController.value * 0.08) : 1.0;
+                        final scale = _isRunning ? 1.0 + (_pulseController.value * 0.05) : 1.0;
                         return Transform.scale(
                           scale: scale,
                           child: Container(
-                            width: 240,
-                            height: 240,
+                            width: 250,
+                            height: 250,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               gradient: RadialGradient(
                                 colors: [
-                                  AppColors.qiPrimary.withValues(alpha: 0.25),
-                                  AppColors.jadePrimary.withValues(alpha: 0.08),
-                                  Colors.transparent,
+                                  AppColors.qiPrimary.withValues(alpha: _isRunning ? 0.3 : 0.12),
+                                  AppColors.jadePrimary.withValues(alpha: _isRunning ? 0.15 : 0.05),
+                                  AppColors.surfaceCard.withValues(alpha: 0.9),
                                 ],
+                                stops: const [0.0, 0.65, 1.0],
                               ),
                               border: Border.all(
-                                color: _isRunning ? AppColors.qiLight : AppColors.border,
+                                color: _isRunning ? AppColors.qiLight : AppColors.borderGold.withValues(alpha: 0.4),
                                 width: 2,
                               ),
-                              boxShadow: _isRunning
-                                  ? [
-                                      BoxShadow(
-                                        color: AppColors.qiPrimary.withValues(alpha: 0.35),
-                                        blurRadius: 25,
-                                        spreadRadius: 4,
-                                      ),
-                                    ]
-                                  : null,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: (_isRunning ? AppColors.qiPrimary : AppColors.goldPrimary).withValues(alpha: _isRunning ? 0.35 : 0.12),
+                                  blurRadius: _isRunning ? 30 : 16,
+                                  spreadRadius: _isRunning ? 6 : 1,
+                                ),
+                              ],
                             ),
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
-                                // Progress Ring
+                                // Circular Progress Ring
                                 SizedBox(
-                                  width: 220,
-                                  height: 220,
+                                  width: 230,
+                                  height: 230,
                                   child: CircularProgressIndicator(
                                     value: progress,
-                                    strokeWidth: 4,
-                                    backgroundColor: AppColors.surfaceLight.withValues(alpha: 0.5),
-                                    color: AppColors.qiPrimary,
+                                    strokeWidth: 5,
+                                    backgroundColor: AppColors.surfaceLight.withValues(alpha: 0.6),
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      _isRunning ? AppColors.qiLight : AppColors.goldPrimary,
+                                    ),
                                   ),
                                 ),
                                 Column(
@@ -204,24 +214,36 @@ class _MeditationScreenState extends State<MeditationScreen> with SingleTickerPr
                                   children: [
                                     Icon(
                                       Icons.self_improvement_rounded,
-                                      color: _isRunning ? AppColors.qiLight : AppColors.textMuted,
-                                      size: 38,
+                                      color: _isRunning ? AppColors.qiLight : AppColors.goldLight,
+                                      size: 40,
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 6),
                                     Text(
                                       _formatTime(_secondsRemaining),
-                                      style: TextStyle(
-                                        fontSize: 42,
+                                      style: AppTextStyles.cinzel(
+                                        fontSize: 44,
                                         fontWeight: FontWeight.w900,
-                                        color: _isRunning ? AppColors.textPrimary : AppColors.textSecondary,
+                                        color: _isRunning ? AppColors.textPrimary : AppColors.goldLight,
                                         letterSpacing: 2,
                                       ),
                                     ),
-                                    Text(
-                                      _isRunning ? 'กำลังไหลเวียนลมปราณ...' : 'พร้อมบำเพ็ญสมาธิ',
-                                      style: AppTextStyles.bodySmall.copyWith(
-                                        color: _isRunning ? AppColors.qiLight : AppColors.textMuted,
-                                        fontSize: 11,
+                                    const SizedBox(height: 2),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                                      decoration: BoxDecoration(
+                                        color: (_isRunning ? AppColors.qiPrimary : AppColors.goldPrimary).withValues(alpha: 0.15),
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: (_isRunning ? AppColors.qiLight : AppColors.goldPrimary).withValues(alpha: 0.3),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        _isRunning ? 'กำลังไหลเวียนลมปราณ...' : 'พร้อมบำเพ็ญสมาธิ',
+                                        style: AppTextStyles.bodySmall.copyWith(
+                                          color: _isRunning ? AppColors.qiLight : AppColors.goldLight,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -233,18 +255,22 @@ class _MeditationScreenState extends State<MeditationScreen> with SingleTickerPr
                       },
                     ),
 
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 36),
 
-                    // Duration Presets (Only when not running)
+                    // Duration Preset Selector
                     if (!_isRunning) ...[
                       Text(
                         'เลือกระยะเวลาบำเพ็ญเพียร',
-                        style: AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.bold),
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.goldLight,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                        ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 12),
                       Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
+                        spacing: 10,
+                        runSpacing: 10,
                         alignment: WrapAlignment.center,
                         children: _presetMinutes.map((mins) {
                           final isSelected = _selectedMinutes == mins;
@@ -253,30 +279,38 @@ class _MeditationScreenState extends State<MeditationScreen> with SingleTickerPr
                             borderRadius: BorderRadius.circular(10),
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 150),
-                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                               decoration: BoxDecoration(
                                 color: isSelected
                                     ? AppColors.qiPrimary.withValues(alpha: 0.25)
-                                    : AppColors.surfaceLight.withValues(alpha: 0.4),
+                                    : AppColors.surfaceLight.withValues(alpha: 0.6),
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: isSelected ? AppColors.qiPrimary : AppColors.border,
-                                  width: isSelected ? 1.5 : 1.0,
+                                  color: isSelected ? AppColors.qiLight : AppColors.border,
+                                  width: isSelected ? 1.6 : 1.0,
                                 ),
+                                boxShadow: isSelected
+                                    ? [
+                                        BoxShadow(
+                                          color: AppColors.qiPrimary.withValues(alpha: 0.25),
+                                          blurRadius: 8,
+                                        ),
+                                      ]
+                                    : null,
                               ),
                               child: Text(
                                 '$mins นาที',
                                 style: TextStyle(
                                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                                   color: isSelected ? AppColors.qiLight : AppColors.textSecondary,
-                                  fontSize: 13,
+                                  fontSize: 13.5,
                                 ),
                               ),
                             ),
                           );
                         }).toList(),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 28),
                     ],
 
                     // Control Buttons
@@ -311,9 +345,9 @@ class _MeditationScreenState extends State<MeditationScreen> with SingleTickerPr
                       ],
                     ),
 
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 36),
 
-                    // Stats summary card
+                    // Session & Cumulative Stats Card
                     WuxiaCard(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -324,20 +358,20 @@ class _MeditationScreenState extends State<MeditationScreen> with SingleTickerPr
                                 '${cultivation.stats.meditationMinutes} นาที',
                                 style: AppTextStyles.qiCounter.copyWith(
                                   color: AppColors.qiLight,
-                                  fontSize: 20,
+                                  fontSize: 22,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 'เวลาปิดด่านสะสม',
-                                style: AppTextStyles.bodySmall,
+                                style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
                               ),
                             ],
                           ),
                           Container(
-                            height: 36,
+                            height: 40,
                             width: 1,
-                            color: AppColors.divider,
+                            color: AppColors.borderGold.withValues(alpha: 0.3),
                           ),
                           Column(
                             children: [
@@ -345,13 +379,13 @@ class _MeditationScreenState extends State<MeditationScreen> with SingleTickerPr
                                 '+${_selectedMinutes * 2 + (_selectedMinutes >= 25 ? 15 : 0)} Qi',
                                 style: AppTextStyles.qiCounter.copyWith(
                                   color: AppColors.goldLight,
-                                  fontSize: 20,
+                                  fontSize: 22,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 'รางวัลเซสชันนี้',
-                                style: AppTextStyles.bodySmall,
+                                style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
                               ),
                             ],
                           ),

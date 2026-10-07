@@ -5,6 +5,8 @@ import 'package:murim_app/core/utils/cultivation_calculator.dart';
 import 'package:murim_app/data/models/user_stats_model.dart';
 import 'package:murim_app/presentation/widgets/wuxia_card.dart';
 
+/// DailyStreakCard
+/// Styled like a Meridian Fire Talisman (ยันต์เพลิงมังกรฝึกตนต่อเนื่อง)
 class DailyStreakCard extends StatelessWidget {
   final UserStats stats;
 
@@ -19,22 +21,22 @@ class DailyStreakCard extends StatelessWidget {
     final bonusPercent = ((bonusMultiplier - 1.0) * 100).toInt();
 
     return WuxiaCard(
-      borderColor: AppColors.goldPrimary.withValues(alpha: 0.4),
-      padding: const EdgeInsets.all(16),
+      borderColor: AppColors.goldDark.withValues(alpha: 0.35),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
         children: [
-          // Fire Flame Icon with Aura
+          // Dragon Fire Talisman Icon
           Container(
-            width: 54,
-            height: 54,
+            width: 48,
+            height: 48,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.goldPrimary.withValues(alpha: 0.15),
-              border: Border.all(color: AppColors.goldPrimary, width: 1.5),
+              color: AppColors.goldPrimary.withValues(alpha: 0.12),
+              border: Border.all(color: AppColors.goldPrimary.withValues(alpha: 0.7), width: 1.2),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.goldPrimary.withValues(alpha: 0.3),
-                  blurRadius: 12,
+                  color: AppColors.goldPrimary.withValues(alpha: 0.2),
+                  blurRadius: 10,
                 ),
               ],
             ),
@@ -42,7 +44,7 @@ class DailyStreakCard extends StatelessWidget {
               child: Icon(
                 Icons.local_fire_department_rounded,
                 color: AppColors.goldPrimary,
-                size: 32,
+                size: 28,
               ),
             ),
           ),
@@ -59,14 +61,14 @@ class DailyStreakCard extends StatelessWidget {
                       '${stats.currentStreak}',
                       style: AppTextStyles.qiCounter.copyWith(
                         color: AppColors.goldLight,
-                        fontSize: 24,
+                        fontSize: 22,
                       ),
                     ),
                     const SizedBox(width: 6),
                     Text(
                       'วันฝึกตนต่อเนื่อง',
                       style: AppTextStyles.heading3.copyWith(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -99,7 +101,7 @@ class DailyStreakCard extends StatelessWidget {
                 style: const TextStyle(
                   color: AppColors.qiLight,
                   fontWeight: FontWeight.bold,
-                  fontSize: 13,
+                  fontSize: 12.5,
                 ),
               ),
             ],

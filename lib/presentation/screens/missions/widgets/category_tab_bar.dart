@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:murim_app/core/theme/app_colors.dart';
 import 'package:murim_app/data/models/cultivation_category.dart';
 
+/// CategoryTabBar
+/// Styled like Bamboo Tablets (ป้ายไม้ไผ่หมวดวิชาสำนัก)
 class CategoryTabBar extends StatelessWidget {
   final CultivationCategory? selectedCategory;
   final Function(CultivationCategory?) onCategorySelected;
@@ -22,7 +24,7 @@ class CategoryTabBar extends StatelessWidget {
         children: [
           // "ทั้งหมด" Tab
           _buildTab(
-            title: 'เทียบภารกิจทั้งหมด',
+            title: 'เทียบทั้งหมด',
             icon: Icons.all_inclusive_rounded,
             isSelected: selectedCategory == null,
             color: AppColors.goldPrimary,
@@ -65,24 +67,24 @@ class CategoryTabBar extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(8),
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
           decoration: BoxDecoration(
             color: isSelected
-                ? color.withValues(alpha: 0.2)
-                : AppColors.surfaceLight.withValues(alpha: 0.4),
-            borderRadius: BorderRadius.circular(20),
+                ? color.withValues(alpha: 0.16)
+                : AppColors.surfaceLight.withValues(alpha: 0.35),
+            borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isSelected ? color : AppColors.border,
-              width: isSelected ? 1.5 : 1.0,
+              color: isSelected ? color.withValues(alpha: 0.8) : AppColors.border,
+              width: isSelected ? 1.2 : 0.9,
             ),
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: color.withValues(alpha: 0.25),
-                      blurRadius: 8,
+                      color: color.withValues(alpha: 0.15),
+                      blurRadius: 6,
                     ),
                   ]
                 : null,
@@ -92,32 +94,32 @@ class CategoryTabBar extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                size: 16,
+                size: 15,
                 color: isSelected ? color : AppColors.textSecondary,
               ),
-              const SizedBox(width: 6),
+              const SizedBox(width: 5),
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 12.5,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   color: isSelected ? color : AppColors.textSecondary,
                 ),
               ),
               if (count != null) ...[
-                const SizedBox(width: 6),
+                const SizedBox(width: 5),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                   decoration: BoxDecoration(
                     color: isSelected ? color : AppColors.surfaceCard,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     '$count',
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: 9.5,
                       fontWeight: FontWeight.bold,
-                      color: isSelected ? Colors.black : AppColors.textSecondary,
+                      color: isSelected ? const Color(0xFF090B10) : AppColors.textSecondary,
                     ),
                   ),
                 ),

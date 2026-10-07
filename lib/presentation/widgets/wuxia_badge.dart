@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/models/cultivation_category.dart';
 
+/// SectSeal / WuxiaBadge
+/// Inspired by traditional Bamboo Slips (ป้ายไม้ไผ่) and Cinnabar Seals (ตราประทับสำนัก)
 class WuxiaBadge extends StatelessWidget {
   final String text;
   final Color color;
@@ -30,7 +32,7 @@ class WuxiaBadge extends StatelessWidget {
     switch (difficulty) {
       case 1:
         color = AppColors.jadeLight;
-        label = 'ระดับต่ำ';
+        label = 'ระดับต้น';
         break;
       case 2:
         color = AppColors.qiLight;
@@ -52,15 +54,15 @@ class WuxiaBadge extends StatelessWidget {
     return WuxiaBadge(
       text: label,
       color: color,
-      icon: Icons.star_rounded,
+      icon: Icons.shield_outlined,
     );
   }
 
   factory WuxiaBadge.qiReward(int qi) {
     return WuxiaBadge(
       text: '+$qi Qi',
-      color: AppColors.goldPrimary,
-      icon: Icons.flash_on_rounded,
+      color: AppColors.goldLight,
+      icon: Icons.bolt_rounded,
       isSolid: true,
     );
   }
@@ -68,20 +70,20 @@ class WuxiaBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
       decoration: BoxDecoration(
-        color: isSolid ? color.withValues(alpha: 0.2) : color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(8),
+        color: isSolid ? color.withValues(alpha: 0.18) : color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(6),
         border: Border.all(
-          color: color.withValues(alpha: 0.4),
-          width: 1,
+          color: color.withValues(alpha: 0.35),
+          width: 0.9,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
-            Icon(icon, size: 13, color: color),
+            Icon(icon, size: 12.5, color: color),
             const SizedBox(width: 4),
           ],
           Text(
@@ -90,7 +92,7 @@ class WuxiaBadge extends StatelessWidget {
               color: color,
               fontSize: 11,
               fontWeight: FontWeight.w700,
-              letterSpacing: 0.4,
+              letterSpacing: 0.3,
             ),
           ),
         ],

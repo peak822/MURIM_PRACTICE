@@ -48,14 +48,21 @@ class _MainShellScreenState extends State<MainShellScreen> {
 
         return Scaffold(
           appBar: AppBar(
+            elevation: 0,
             title: Row(
               children: [
-                // Martial Icon
+                // Martial Yin-Yang / Dragon Jade Emblem
                 Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: AppColors.goldGradient,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.goldPrimary.withValues(alpha: 0.3),
+                        blurRadius: 8,
+                      ),
+                    ],
                   ),
                   child: const Icon(
                     Icons.auto_stories_rounded,
@@ -66,7 +73,10 @@ class _MainShellScreenState extends State<MainShellScreen> {
                 const SizedBox(width: 10),
                 Text(
                   'MURIM TRACKER',
-                  style: AppTextStyles.realmTitle.copyWith(fontSize: 18),
+                  style: AppTextStyles.realmTitle.copyWith(
+                    fontSize: 17,
+                    letterSpacing: 1.5,
+                  ),
                 ),
                 if (isDesktop) ...[
                   const SizedBox(width: 12),
@@ -80,7 +90,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
                     child: Text(
                       realm.fullThaiTitle,
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 11.5,
                         color: realm.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
@@ -92,12 +102,18 @@ class _MainShellScreenState extends State<MainShellScreen> {
             actions: [
               // Qi Pill Counter
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceLight,
+                  color: AppColors.surfaceLight.withValues(alpha: 0.8),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.goldPrimary.withValues(alpha: 0.4)),
+                  border: Border.all(color: AppColors.borderGold),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.goldPrimary.withValues(alpha: 0.15),
+                      blurRadius: 6,
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
@@ -105,7 +121,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
                     const SizedBox(width: 4),
                     Text(
                       '${stats.totalQi} Qi',
-                      style: TextStyle(
+                      style: AppTextStyles.cinzel(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
                         color: AppColors.goldLight,
@@ -117,12 +133,12 @@ class _MainShellScreenState extends State<MainShellScreen> {
 
               // Streak Flame
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceLight,
+                  color: AppColors.surfaceLight.withValues(alpha: 0.8),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.crimsonPrimary.withValues(alpha: 0.4)),
+                  border: Border.all(color: AppColors.crimsonPrimary.withValues(alpha: 0.5)),
                 ),
                 child: Row(
                   children: [
@@ -131,7 +147,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
                     Text(
                       '${stats.currentStreak} วัน',
                       style: const TextStyle(
-                        fontSize: 13,
+                        fontSize: 12.5,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
                       ),
@@ -145,12 +161,25 @@ class _MainShellScreenState extends State<MainShellScreen> {
           body: isDesktop
               ? Row(
                   children: [
-                    // Desktop Navigation Rail
+                    // Desktop Navigation Rail with bamboo scroll tablet aesthetic
                     NavigationRail(
                       selectedIndex: _currentIndex,
                       onDestinationSelected: _onTabSelected,
                       labelType: NavigationRailLabelType.all,
-                      minWidth: 90,
+                      minWidth: 92,
+                      backgroundColor: AppColors.surface,
+                      indicatorColor: AppColors.goldPrimary.withValues(alpha: 0.2),
+                      selectedIconTheme: const IconThemeData(color: AppColors.goldLight, size: 24),
+                      unselectedIconTheme: const IconThemeData(color: AppColors.textMuted, size: 22),
+                      selectedLabelTextStyle: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.goldLight,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      unselectedLabelTextStyle: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textMuted,
+                        fontSize: 11,
+                      ),
                       leading: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: Text(
@@ -159,6 +188,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
                             color: AppColors.goldLight,
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
+                            letterSpacing: 0.5,
                           ),
                         ),
                       ),
@@ -206,31 +236,47 @@ class _MainShellScreenState extends State<MainShellScreen> {
                 ),
           bottomNavigationBar: isDesktop
               ? null
-              : BottomNavigationBar(
-                  currentIndex: _currentIndex,
-                  onTap: _onTabSelected,
-                  items: const [
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.dashboard_rounded),
-                      label: 'หอฝึกตน',
+              : Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: AppColors.borderGold.withValues(alpha: 0.3),
+                        width: 1,
+                      ),
                     ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.checklist_rounded),
-                      label: 'เทียบภารกิจ',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.self_improvement_rounded),
-                      label: 'ปิดด่านสมาธิ',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.history_edu_rounded),
-                      label: 'บันทึกคัมภีร์',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.settings_rounded),
-                      label: 'ตั้งค่า',
-                    ),
-                  ],
+                  ),
+                  child: BottomNavigationBar(
+                    currentIndex: _currentIndex,
+                    onTap: _onTabSelected,
+                    type: BottomNavigationBarType.fixed,
+                    backgroundColor: AppColors.surface,
+                    selectedItemColor: AppColors.goldLight,
+                    unselectedItemColor: AppColors.textMuted,
+                    selectedFontSize: 11,
+                    unselectedFontSize: 11,
+                    items: const [
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.dashboard_rounded),
+                        label: 'หอฝึกตน',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.checklist_rounded),
+                        label: 'เทียบภารกิจ',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.self_improvement_rounded),
+                        label: 'ปิดด่านสมาธิ',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.history_edu_rounded),
+                        label: 'บันทึกคัมภีร์',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.settings_rounded),
+                        label: 'ตั้งค่า',
+                      ),
+                    ],
+                  ),
                 ),
         );
       },

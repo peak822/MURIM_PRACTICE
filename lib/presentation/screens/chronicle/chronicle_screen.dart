@@ -35,20 +35,42 @@ class ChronicleScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Header
-                    Text(
-                      'หอบันทึกคัมภีร์ยุทธภพ (Hall of Records)',
-                      style: AppTextStyles.heading1.copyWith(
-                        color: AppColors.goldLight,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      'ประวัติการบำเพ็ญเพียร การทำภารกิจ และการทะลวงด่านยุทธภพ',
-                      style: AppTextStyles.bodyMedium,
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.goldPrimary.withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: AppColors.goldPrimary.withValues(alpha: 0.3)),
+                          ),
+                          child: const Icon(Icons.history_edu_rounded, color: AppColors.goldLight, size: 24),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'หอบันทึกคัมภีร์ยุทธภพ (Hall of Records)',
+                                style: AppTextStyles.heading1.copyWith(
+                                  color: AppColors.goldLight,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                'ประวัติการบำเพ็ญเพียร การทำภารกิจ และการทะลวงด่านยุทธภพ',
+                                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20),
 
-                    // Quick Stats Cards Row
+                    // Quick Stats Cards Row (Martial Tablets)
                     Row(
                       children: [
                         Expanded(
@@ -79,28 +101,69 @@ class ChronicleScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 24),
 
                     // Timeline Title
                     Row(
                       children: [
-                        const Icon(Icons.history_rounded, color: AppColors.goldPrimary, size: 20),
+                        const Icon(Icons.auto_stories_rounded, color: AppColors.goldPrimary, size: 18),
                         const SizedBox(width: 8),
                         Text(
-                          'บันทึกเหตุการณ์การฝึกฝน (${logs.length} รายการ)',
+                          'จารึกเหตุการณ์การฝึกฝน',
                           style: AppTextStyles.heading3.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: AppColors.goldPrimary.withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: AppColors.goldPrimary.withValues(alpha: 0.3)),
+                          ),
+                          child: Text(
+                            '${logs.length} รายการ',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.goldLight,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 14),
 
                     // Timeline list
                     Expanded(
                       child: logs.isEmpty
                           ? Center(
-                              child: Text(
-                                'ยังไม่มีบันทึกการฝึกตน เริ่มทำภารกิจเพื่อจารึกประวัติศาสตร์!',
-                                style: AppTextStyles.bodyMedium,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.surfaceCard,
+                                      border: Border.all(color: AppColors.borderGold.withValues(alpha: 0.3)),
+                                    ),
+                                    child: const Icon(
+                                      Icons.history_edu_rounded,
+                                      size: 48,
+                                      color: AppColors.goldPrimary,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'ยังไม่มีบันทึกการฝึกตน',
+                                    style: AppTextStyles.heading3.copyWith(color: AppColors.goldLight),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    'เริ่มทำภารกิจหรือปิดด่านเพื่อจารึกประวัติศาสตร์ยุทธภพ!',
+                                    style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                                  ),
+                                ],
                               ),
                             )
                           : ListView.separated(
@@ -136,7 +199,7 @@ class ChronicleScreen extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             value,
-            style: TextStyle(
+            style: AppTextStyles.cinzel(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: color,
@@ -145,7 +208,7 @@ class ChronicleScreen extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             title,
-            style: AppTextStyles.bodySmall.copyWith(fontSize: 10.5),
+            style: AppTextStyles.bodySmall.copyWith(fontSize: 11, color: AppColors.textSecondary),
             textAlign: TextAlign.center,
           ),
         ],
@@ -172,7 +235,7 @@ class ChronicleScreen extends StatelessWidget {
     }
 
     return WuxiaCard(
-      borderColor: isBreakthrough ? AppColors.goldPrimary.withValues(alpha: 0.5) : AppColors.border,
+      borderColor: isBreakthrough ? AppColors.goldPrimary.withValues(alpha: 0.6) : AppColors.border,
       hasGlow: isBreakthrough,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
@@ -183,6 +246,7 @@ class ChronicleScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: iconColor.withValues(alpha: 0.15),
               shape: BoxShape.circle,
+              border: Border.all(color: iconColor.withValues(alpha: 0.3)),
             ),
             child: Icon(iconData, color: iconColor, size: 20),
           ),
@@ -198,7 +262,7 @@ class ChronicleScreen extends StatelessWidget {
                       child: Text(
                         log.title,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 14.5,
                           fontWeight: FontWeight.bold,
                           color: isBreakthrough ? AppColors.goldLight : AppColors.textPrimary,
                         ),
@@ -206,7 +270,7 @@ class ChronicleScreen extends StatelessWidget {
                     ),
                     Text(
                       DateFormatter.formatRelativeDate(log.timestamp),
-                      style: AppTextStyles.bodySmall.copyWith(fontSize: 10.5),
+                      style: AppTextStyles.bodySmall.copyWith(fontSize: 10.5, color: AppColors.textMuted),
                     ),
                   ],
                 ),
@@ -218,7 +282,7 @@ class ChronicleScreen extends StatelessWidget {
                   ),
                 ),
                 if (log.category != null || log.qiGained > 0) ...[
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
                       if (log.category != null) ...[

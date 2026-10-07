@@ -13,6 +13,7 @@ import 'widgets/daily_streak_card.dart';
 import 'widgets/realm_hero_card.dart';
 import 'widgets/stat_progress_card.dart';
 
+/// DashboardScreen / หอฝึกตน (Cultivation Pagoda)
 class DashboardScreen extends StatefulWidget {
   final VoidCallback? onNavigateToMissions;
   final VoidCallback? onNavigateToMeditation;
@@ -56,9 +57,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return AlertDialog(
           title: Row(
             children: [
-              const Icon(Icons.brush_rounded, color: AppColors.goldPrimary),
+              const Icon(Icons.brush_rounded, color: AppColors.goldPrimary, size: 20),
               const SizedBox(width: 8),
-              Text('แก้ไขข้อมูลจอมยุทธ์', style: AppTextStyles.heading2),
+              Text('จารึกข้อมูลจอมยุทธ์', style: AppTextStyles.heading2),
             ],
           ),
           content: Column(
@@ -66,17 +67,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               TextField(
                 controller: nameController,
+                maxLength: 40,
                 decoration: const InputDecoration(
                   labelText: 'นามฉายาจอมยุทธ์',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person_outline),
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 12),
               TextField(
                 controller: sectController,
+                maxLength: 40,
                 decoration: const InputDecoration(
-                  labelText: 'ชื่อสำนัก / พรรค',
+                  labelText: 'สังกัดสำนัก / พรรค',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.shield_outlined),
                 ),
@@ -89,7 +92,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: const Text('ยกเลิก', style: TextStyle(color: AppColors.textSecondary)),
             ),
             WuxiaButton(
-              text: 'บันทึก',
+              text: 'จารึก',
               height: 38,
               onPressed: () {
                 if (nameController.text.trim().isNotEmpty) {
@@ -137,16 +140,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Martial Quote Banner
+                        // Martial Manuscript Quote Banner
                         _buildQuoteBanner(),
-                        const SizedBox(height: 18),
+                        const SizedBox(height: 16),
 
                         if (isDesktop)
                           // Desktop 2-column layout
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Left column: Realm Hero & Stats
+                              // Left column: Imperial Scroll & Stats
                               Expanded(
                                 flex: 6,
                                 child: Column(
@@ -155,14 +158,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       stats: stats,
                                       onEditProfile: () => _showEditProfileDialog(context),
                                     ),
-                                    const SizedBox(height: 18),
+                                    const SizedBox(height: 16),
                                     DailyStreakCard(stats: stats),
-                                    const SizedBox(height: 18),
+                                    const SizedBox(height: 16),
                                     StatProgressCard(stats: stats),
                                   ],
                                 ),
                               ),
-                              const SizedBox(width: 24),
+                              const SizedBox(width: 20),
 
                               // Right column: Bagua Radar Chart & Quick Actions
                               Expanded(
@@ -170,7 +173,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Column(
                                   children: [
                                     _buildRadarChartCard(attributes, stats.currentRealm.primaryColor),
-                                    const SizedBox(height: 18),
+                                    const SizedBox(height: 16),
                                     _buildQuickActionsCard(context),
                                   ],
                                 ),
@@ -185,13 +188,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 stats: stats,
                                 onEditProfile: () => _showEditProfileDialog(context),
                               ),
-                              const SizedBox(height: 18),
+                              const SizedBox(height: 14),
                               DailyStreakCard(stats: stats),
-                              const SizedBox(height: 18),
+                              const SizedBox(height: 14),
                               _buildRadarChartCard(attributes, stats.currentRealm.primaryColor),
-                              const SizedBox(height: 18),
+                              const SizedBox(height: 14),
                               StatProgressCard(stats: stats),
-                              const SizedBox(height: 18),
+                              const SizedBox(height: 14),
                               _buildQuickActionsCard(context),
                             ],
                           ),
@@ -210,20 +213,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildQuoteBanner() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
       decoration: BoxDecoration(
         color: AppColors.surfaceLight.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.goldPrimary.withValues(alpha: 0.25), width: 1),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.goldDark.withValues(alpha: 0.35), width: 0.9),
       ),
       child: Row(
         children: [
           const Icon(
             Icons.auto_stories_rounded,
             color: AppColors.goldLight,
-            size: 20,
+            size: 18,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               AppConstants.cultivationQuotes.first,
@@ -240,8 +243,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildRadarChartCard(Map<String, double> attributes, Color primaryColor) {
     return WuxiaCard(
-      borderColor: primaryColor.withValues(alpha: 0.4),
+      borderColor: primaryColor.withValues(alpha: 0.35),
       hasGlow: true,
+      showCornerAccents: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -253,7 +257,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Icon(
                     Icons.radar_rounded,
                     color: primaryColor,
-                    size: 20,
+                    size: 19,
                   ),
                   const SizedBox(width: 8),
                   Text(
@@ -267,13 +271,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: primaryColor.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(6),
+                  color: primaryColor.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Text(
                   'Reactive Bagua',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 9.5,
                     fontWeight: FontWeight.bold,
                     color: primaryColor,
                   ),
@@ -281,12 +285,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Text(
             'กราฟใยแมงมุมแสดงสมดุลพลัง 6 ด้าน อัปเดตทันทีเมื่อบ่มเพาะสำเร็จ',
             style: AppTextStyles.bodySmall,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
           BaguaRadarChart(
             attributes: attributes,
             primaryColor: primaryColor,
@@ -309,7 +313,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const Icon(
                 Icons.flash_on_rounded,
                 color: AppColors.goldPrimary,
-                size: 20,
+                size: 19,
               ),
               const SizedBox(width: 8),
               Text(
@@ -320,18 +324,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
                 child: WuxiaButton(
-                  text: 'ทำภารกิจ ($pendingCount)',
+                  text: 'ทำเทียบภารกิจ ($pendingCount)',
                   icon: Icons.checklist_rounded,
                   style: WuxiaButtonStyle.gold,
                   onPressed: widget.onNavigateToMissions,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 10),
               Expanded(
                 child: WuxiaButton(
                   text: 'ปิดด่านสมาธิ',

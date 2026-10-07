@@ -5,6 +5,8 @@ import 'package:murim_app/data/models/user_stats_model.dart';
 import 'package:murim_app/presentation/widgets/qi_bar.dart';
 import 'package:murim_app/presentation/widgets/wuxia_card.dart';
 
+/// RealmHeroCard
+/// Styled like an Imperial Cultivation Scroll (คัมภีร์บำเพ็ญตนแห่งสำนัก)
 class RealmHeroCard extends StatelessWidget {
   final UserStats stats;
   final VoidCallback? onEditProfile;
@@ -21,13 +23,14 @@ class RealmHeroCard extends StatelessWidget {
     final progress = stats.realmProgress;
 
     return WuxiaCard(
-      borderColor: realm.primaryColor.withValues(alpha: 0.6),
+      borderColor: realm.primaryColor.withValues(alpha: 0.5),
       hasGlow: true,
+      showCornerAccents: true,
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header: User & Sect Name
+          // Header: Disciple & Sect Name
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -41,7 +44,7 @@ class RealmHeroCard extends StatelessWidget {
                       gradient: AppColors.goldGradient,
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.goldPrimary.withValues(alpha: 0.4),
+                          color: AppColors.goldPrimary.withValues(alpha: 0.3),
                           blurRadius: 10,
                         ),
                       ],
@@ -49,8 +52,8 @@ class RealmHeroCard extends StatelessWidget {
                     child: const Center(
                       child: Icon(
                         Icons.person_rounded,
-                        color: Color(0xFF0F172A),
-                        size: 26,
+                        color: Color(0xFF090B10),
+                        size: 24,
                       ),
                     ),
                   ),
@@ -89,22 +92,22 @@ class RealmHeroCard extends StatelessWidget {
               if (onEditProfile != null)
                 IconButton(
                   onPressed: onEditProfile,
-                  icon: const Icon(Icons.edit_note_rounded, color: AppColors.textSecondary),
-                  tooltip: 'แก้ไขข้อมูลผู้ฝึกตน',
+                  icon: const Icon(Icons.edit_note_rounded, color: AppColors.textSecondary, size: 22),
+                  tooltip: 'แก้ไขข้อมูลจอมยุทธ์',
                 ),
             ],
           ),
 
-          const SizedBox(height: 18),
+          const SizedBox(height: 16),
           const Divider(color: AppColors.divider, height: 1),
-          const SizedBox(height: 18),
+          const SizedBox(height: 16),
 
           // Realm Title and Stage Banner
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
             decoration: BoxDecoration(
-              color: const Color(0xFF090E1A),
-              borderRadius: BorderRadius.circular(12),
+              color: const Color(0xFF0B0F18),
+              borderRadius: BorderRadius.circular(10),
               border: Border.all(color: realm.primaryColor.withValues(alpha: 0.3), width: 1),
             ),
             child: Row(
@@ -112,7 +115,7 @@ class RealmHeroCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: realm.primaryColor.withValues(alpha: 0.15),
+                    color: realm.primaryColor.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(
@@ -135,22 +138,21 @@ class RealmHeroCard extends StatelessWidget {
                       ),
                       Text(
                         realm.fullThaiTitle,
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
+                        style: AppTextStyles.heading2.copyWith(
                           color: realm.primaryColor,
-                          letterSpacing: 0.5,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.5,
                         ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3.5),
                   decoration: BoxDecoration(
-                    color: realm.primaryColor.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: realm.primaryColor, width: 1),
+                    color: realm.primaryColor.withValues(alpha: 0.18),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: realm.primaryColor.withValues(alpha: 0.5), width: 0.9),
                   ),
                   child: Text(
                     'ขั้น ${realm.level}/20',
@@ -165,7 +167,7 @@ class RealmHeroCard extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
 
           // Realm Description
           Text(
@@ -176,21 +178,21 @@ class RealmHeroCard extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
 
           // Qi Progress Bar
           QiBar(
             progress: progress,
             currentQi: stats.totalQi,
             maxQi: realm.maxQi,
-            height: 14,
+            height: 12,
             gradient: LinearGradient(
-              colors: [realm.primaryColor, realm.primaryColor.withValues(alpha: 0.7)],
+              colors: [realm.primaryColor, realm.primaryColor.withValues(alpha: 0.6)],
             ),
             labelText: 'พลังลมปราณสะสม (Qi)',
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
 
           // Qi remaining info
           Row(

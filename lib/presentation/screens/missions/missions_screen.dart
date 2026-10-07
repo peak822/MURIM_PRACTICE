@@ -12,6 +12,7 @@ import 'widgets/add_mission_dialog.dart';
 import 'widgets/category_tab_bar.dart';
 import 'widgets/mission_card.dart';
 
+/// MissionsScreen / หอเทียบภารกิจสำนัก (Sect Mission Board)
 class MissionsScreen extends StatelessWidget {
   const MissionsScreen({super.key});
 
@@ -58,15 +59,15 @@ class MissionsScreen extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('ละทิ้งเทียบภารกิจ?'),
-        content: Text('คุณต้องการลบ "${mission.title}" หรือไม่?'),
+        content: Text('คุณต้องการลบเทียบ "${mission.title}" ออกจากสำนักหรือไม่?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
             child: const Text('ยกเลิก', style: TextStyle(color: AppColors.textSecondary)),
           ),
           WuxiaButton(
-            text: 'ลบภารกิจ',
-            height: 38,
+            text: 'ลบเทียบ',
+            height: 36,
             style: WuxiaButtonStyle.crimson,
             onPressed: () {
               context.read<MissionProvider>().deleteMission(mission.id);
@@ -120,20 +121,20 @@ class MissionsScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'ทำภารกิจเพื่อสะสมปราณ Qi และพัฒนาสเตตัสวรยุทธ์',
+                              'รับเทียบภารกิจเพื่อสะสมปราณ Qi และฝึกปรือสเตตัสวรยุทธ์',
                               style: AppTextStyles.bodyMedium,
                             ),
                           ],
                         ),
                         WuxiaButton(
-                          text: isDesktop ? 'เพิ่มเทียบภารกิจ' : 'เพิ่มภารกิจ',
+                          text: isDesktop ? 'ออกเทียบภารกิจ' : 'ออกเทียบ',
                           icon: Icons.add_rounded,
                           style: WuxiaButtonStyle.gold,
                           onPressed: () => _openAddMissionDialog(context),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 16),
 
                     // Search & Status Filter Row
                     Row(
@@ -142,20 +143,21 @@ class MissionsScreen extends StatelessWidget {
                         Expanded(
                           child: TextField(
                             onChanged: (val) => missionProvider.setSearchQuery(val),
+                            style: const TextStyle(fontSize: 13.5),
                             decoration: InputDecoration(
-                              hintText: 'ค้นหาเทียบภารกิจ...',
+                              hintText: 'ค้นหาเทียบภารกิจสำนัก...',
                               hintStyle: const TextStyle(color: AppColors.textMuted, fontSize: 13),
-                              prefixIcon: const Icon(Icons.search_rounded, color: AppColors.textMuted),
+                              prefixIcon: const Icon(Icons.search_rounded, color: AppColors.textMuted, size: 20),
                               filled: true,
-                              fillColor: AppColors.surfaceLight.withValues(alpha: 0.3),
+                              fillColor: AppColors.surfaceLight.withValues(alpha: 0.28),
                               contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(color: AppColors.border),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: const BorderSide(color: AppColors.goldPrimary),
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: AppColors.goldPrimary, width: 1.2),
                               ),
                             ),
                           ),
@@ -164,10 +166,10 @@ class MissionsScreen extends StatelessWidget {
 
                         // Status Filter (All, Pending, Done)
                         Container(
-                          padding: const EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(3.5),
                           decoration: BoxDecoration(
-                            color: AppColors.surfaceLight.withValues(alpha: 0.4),
-                            borderRadius: BorderRadius.circular(12),
+                            color: AppColors.surfaceLight.withValues(alpha: 0.35),
+                            borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: AppColors.border),
                           ),
                           child: Row(
@@ -179,7 +181,7 @@ class MissionsScreen extends StatelessWidget {
                                 onTap: () => missionProvider.setStatusFilter(MissionStatusFilter.all),
                               ),
                               _buildStatusSegment(
-                                label: 'ยังไม่เสร็จ (${missionProvider.pendingCount})',
+                                label: 'ค้างอยู่ (${missionProvider.pendingCount})',
                                 isSelected: missionProvider.statusFilter == MissionStatusFilter.pending,
                                 onTap: () => missionProvider.setStatusFilter(MissionStatusFilter.pending),
                               ),
@@ -193,7 +195,7 @@ class MissionsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 12),
 
                     // Category Tabs
                     CategoryTabBar(
@@ -201,7 +203,7 @@ class MissionsScreen extends StatelessWidget {
                       onCategorySelected: (cat) => missionProvider.setCategoryFilter(cat),
                       counts: counts,
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 16),
 
                     // Missions List
                     Expanded(
@@ -209,7 +211,7 @@ class MissionsScreen extends StatelessWidget {
                           ? _buildEmptyState(context)
                           : ListView.separated(
                               itemCount: missions.length,
-                              separatorBuilder: (ctx, i) => const SizedBox(height: 12),
+                              separatorBuilder: (ctx, i) => const SizedBox(height: 10),
                               itemBuilder: (context, index) {
                                 final mission = missions[index];
                                 return MissionCard(
@@ -268,20 +270,20 @@ class MissionsScreen extends StatelessWidget {
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(7),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.goldPrimary : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(7),
         ),
         child: Text(
           label,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 11.5,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: isSelected ? Colors.black : AppColors.textSecondary,
+            color: isSelected ? const Color(0xFF090B10) : AppColors.textSecondary,
           ),
         ),
       ),
@@ -294,37 +296,37 @@ class MissionsScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 80,
-            height: 80,
+            width: 72,
+            height: 72,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.surfaceLight.withValues(alpha: 0.5),
+              color: AppColors.surfaceLight.withValues(alpha: 0.4),
               border: Border.all(color: AppColors.border),
             ),
             child: const Center(
               child: Icon(
                 Icons.history_edu_rounded,
-                size: 40,
+                size: 36,
                 color: AppColors.goldPrimary,
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
           Text(
-            'ไม่พบเทียบภารกิจในหมวดหมู่นี้',
+            'กระดานเทียบภารกิจว่างเปล่า',
             style: AppTextStyles.heading3.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Text(
-            'สร้างเทียบภารกิจใหม่เพื่อเริ่มต้นฝึกปรือลมปราณ',
+            'ออกเทียบภารกิจใหม่เพื่อเริ่มต้นฝึกปรือลมปราณ',
             style: AppTextStyles.bodyMedium,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 18),
           WuxiaButton(
-            text: 'สร้างเทียบภารกิจใหม่',
+            text: 'ออกเทียบภารกิจแรก',
             icon: Icons.add_rounded,
             style: WuxiaButtonStyle.gold,
             onPressed: () => _openAddMissionDialog(context),

@@ -7,6 +7,8 @@ import 'package:murim_app/data/models/user_stats_model.dart';
 import 'package:murim_app/presentation/widgets/qi_bar.dart';
 import 'package:murim_app/presentation/widgets/wuxia_card.dart';
 
+/// StatProgressCard
+/// Displays progress across the 4 core martial cultivation disciplines.
 class StatProgressCard extends StatelessWidget {
   final UserStats stats;
 
@@ -26,36 +28,36 @@ class StatProgressCard extends StatelessWidget {
               const Icon(
                 Icons.account_tree_rounded,
                 color: AppColors.goldPrimary,
-                size: 20,
+                size: 19,
               ),
               const SizedBox(width: 8),
               Text(
-                'ความก้าวหน้า 4 สายวิชา',
+                'ความก้าวหน้า 4 มรรคาสายวิชา',
                 style: AppTextStyles.heading3.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
 
           _buildStatRow(
             category: CultivationCategory.body,
             xp: stats.bodyXp,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
           _buildStatRow(
             category: CultivationCategory.mind,
             xp: stats.mindXp,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
           _buildStatRow(
             category: CultivationCategory.martial,
             xp: stats.martialXp,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
           _buildStatRow(
             category: CultivationCategory.spiritual,
@@ -74,11 +76,11 @@ class StatProgressCard extends StatelessWidget {
     final progress = CultivationCalculator.getStatLevelProgress(xp);
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: category.color.withValues(alpha: 0.25), width: 1),
+        color: AppColors.surfaceLight.withValues(alpha: 0.35),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: category.color.withValues(alpha: 0.22), width: 0.9),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,42 +90,42 @@ class StatProgressCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(category.icon, size: 18, color: category.color),
+                  Icon(category.icon, size: 17, color: category.color),
                   const SizedBox(width: 8),
                   Text(
                     category.thaiTitle,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 13,
+                      fontSize: 12.5,
                       color: AppColors.textPrimary,
                     ),
                   ),
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                 decoration: BoxDecoration(
-                  color: category.color.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(6),
+                  color: category.color.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Text(
                   'Lv. $level',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 12,
+                    fontSize: 11,
                     color: category.color,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           QiBar(
             progress: progress,
-            height: 6,
+            height: 5,
             showLabels: false,
             gradient: LinearGradient(
-              colors: [category.color, category.color.withValues(alpha: 0.6)],
+              colors: [category.color, category.color.withValues(alpha: 0.5)],
             ),
           ),
           const SizedBox(height: 4),
@@ -137,7 +139,7 @@ class StatProgressCard extends StatelessWidget {
               Text(
                 '$xp XP',
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 10.5,
                   fontWeight: FontWeight.w600,
                   color: category.color,
                 ),

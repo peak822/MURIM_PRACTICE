@@ -1,9 +1,11 @@
 import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:murim_app/core/theme/app_colors.dart';
-import 'package:murim_app/core/theme/app_text_styles.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_text_styles.dart';
 
+/// BaguaRadarChart
+/// Inspired by the Daoist Eight Trigrams (八卦 / ยันต์แปดทิศ) diagram with 6 martial attribute axes.
 class BaguaRadarChart extends StatelessWidget {
   final Map<String, double> attributes; // {'พลังกาย': 65, 'สติปัญญา': 80, ...}
   final Color primaryColor;
@@ -24,7 +26,7 @@ class BaguaRadarChart extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Background Bagua / Yin-Yang & Trigrams Motif
+          // Background Bagua & Trigram Geometry
           CustomPaint(
             size: const Size(260, 260),
             painter: _BaguaBackgroundPainter(primaryColor: primaryColor),
@@ -37,24 +39,24 @@ class BaguaRadarChart extends StatelessWidget {
               RadarChartData(
                 radarShape: RadarShape.polygon,
                 radarBorderData: BorderSide(
-                  color: primaryColor.withValues(alpha: 0.6),
-                  width: 1.5,
+                  color: primaryColor.withValues(alpha: 0.5),
+                  width: 1.4,
                 ),
                 gridBorderData: BorderSide(
-                  color: AppColors.border.withValues(alpha: 0.5),
-                  width: 1,
+                  color: AppColors.border.withValues(alpha: 0.45),
+                  width: 0.9,
                 ),
                 tickBorderData: BorderSide(
-                  color: AppColors.border.withValues(alpha: 0.3),
+                  color: AppColors.border.withValues(alpha: 0.25),
                   width: 0.8,
                 ),
                 tickCount: 4,
                 ticksTextStyle: const TextStyle(
-                  color: Colors.transparent, // Clean look
+                  color: Colors.transparent, // Clean minimalist look
                   fontSize: 10,
                 ),
                 dataSets: [
-                  // 100% Scale Reference Boundary (invisible) so the chart always scales from 0 to 100
+                  // 100% Boundary Reference (invisible) to guarantee proper 0-100 scaling
                   RadarDataSet(
                     fillColor: Colors.transparent,
                     borderColor: Colors.transparent,
@@ -65,11 +67,12 @@ class BaguaRadarChart extends StatelessWidget {
                       (_) => const RadarEntry(value: 100),
                     ),
                   ),
+                  // Actual Martial Stats
                   RadarDataSet(
-                    fillColor: primaryColor.withValues(alpha: 0.25),
+                    fillColor: primaryColor.withValues(alpha: 0.22),
                     borderColor: primaryColor,
-                    borderWidth: 2.2,
-                    entryRadius: 4.5,
+                    borderWidth: 2.0,
+                    entryRadius: 4.0,
                     dataEntries: values.map((val) => RadarEntry(value: val)).toList(),
                   ),
                 ],
@@ -85,13 +88,14 @@ class BaguaRadarChart extends StatelessWidget {
                   return const RadarChartTitle(text: '');
                 },
                 titleTextStyle: AppTextStyles.bodySmall.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                   color: AppColors.textGold,
-                  height: 1.1,
+                  fontSize: 11,
+                  height: 1.15,
                 ),
                 titlePositionPercentageOffset: 0.22,
               ),
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 400),
               curve: Curves.easeInOutCubic,
             ),
           ),
@@ -112,30 +116,36 @@ class _BaguaBackgroundPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = size.width / 2;
 
+    // Outer subtle circle
     final paintCircle = Paint()
-      ..color = AppColors.surfaceLight.withValues(alpha: 0.15)
+      ..color = AppColors.surfaceLight.withValues(alpha: 0.12)
       ..style = PaintingStyle.fill;
+    canvas.drawCircle(center, radius * 0.88, paintCircle);
 
-    canvas.drawCircle(center, radius * 0.9, paintCircle);
-
-    // Outer octagonal / hexagonal guide lines
+    // Outer octagonal boundary
     final paintLine = Paint()
-      ..color = primaryColor.withValues(alpha: 0.15)
+      ..color = primaryColor.withValues(alpha: 0.12)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0;
 
     for (int i = 0; i < 6; i++) {
       final angle = (i * 60) * math.pi / 180;
-      final x = center.dx + (radius * 0.88) * math.cos(angle);
-      final y = center.dy + (radius * 0.88) * math.sin(angle);
+      final x = center.dx + (radius * 0.86) * math.cos(angle);
+      final y = center.dy + (radius * 0.86) * math.sin(angle);
       canvas.drawLine(center, Offset(x, y), paintLine);
     }
 
-    // Inner subtle center core
+    // Inner center Yin-Yang node
     final paintCore = Paint()
       ..color = primaryColor.withValues(alpha: 0.08)
       ..style = PaintingStyle.fill;
-    canvas.drawCircle(center, radius * 0.25, paintCore);
+    canvas.drawCircle(center, radius * 0.22, paintCore);
+
+    final paintCoreRing = Paint()
+      ..color = primaryColor.withValues(alpha: 0.3)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+    canvas.drawCircle(center, radius * 0.22, paintCoreRing);
   }
 
   @override
