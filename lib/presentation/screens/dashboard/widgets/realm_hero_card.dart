@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:murim_app/core/theme/app_colors.dart';
 import 'package:murim_app/core/theme/app_text_styles.dart';
+import 'package:murim_app/data/models/daoist_title.dart';
 import 'package:murim_app/data/models/user_stats_model.dart';
 import 'package:murim_app/presentation/widgets/qi_bar.dart';
 import 'package:murim_app/presentation/widgets/wuxia_card.dart';
@@ -21,6 +22,7 @@ class RealmHeroCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final realm = stats.currentRealm;
     final progress = stats.realmProgress;
+    final equippedTitle = DaoistTitleRegistry.getTitleById(stats.equippedTitleId);
 
     return WuxiaCard(
       borderColor: realm.primaryColor.withValues(alpha: 0.5),
@@ -30,7 +32,7 @@ class RealmHeroCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header: Disciple & Sect Name
+          // Header: Disciple & Sect Name & Title
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -85,6 +87,25 @@ class RealmHeroCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      if (equippedTitle != null) ...[
+                        const SizedBox(height: 3),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1.5),
+                          decoration: BoxDecoration(
+                            color: AppColors.goldPrimary.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: AppColors.goldPrimary.withValues(alpha: 0.3)),
+                          ),
+                          child: Text(
+                            '「 ${equippedTitle.name} 」',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.goldLight,
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ],
