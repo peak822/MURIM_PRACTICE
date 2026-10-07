@@ -9,6 +9,7 @@ class AppConstants {
   static const String missionsBoxName = 'murim_missions_box';
   static const String userStatsBoxName = 'murim_user_stats_box';
   static const String cultivationLogsBoxName = 'murim_cultivation_logs_box';
+  static const String trainingRecordsBoxName = 'murim_training_records_box';
   static const String settingsBoxName = 'murim_settings_box';
 
   // Storage Keys
