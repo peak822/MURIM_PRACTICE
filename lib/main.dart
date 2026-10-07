@@ -5,6 +5,8 @@ import 'package:murim_app/core/theme/app_theme.dart';
 import 'package:murim_app/data/datasources/hive_storage_service.dart';
 import 'package:murim_app/data/repositories/mission_repository.dart';
 import 'package:murim_app/data/repositories/stats_repository.dart';
+import 'package:murim_app/data/repositories/body_cultivation_repository.dart';
+import 'package:murim_app/presentation/providers/body_cultivation_provider.dart';
 import 'package:murim_app/presentation/providers/cultivation_provider.dart';
 import 'package:murim_app/presentation/providers/mission_provider.dart';
 import 'package:murim_app/presentation/providers/settings_provider.dart';
@@ -22,6 +24,7 @@ void main() async {
 
   final missionRepo = MissionRepositoryImpl(storage: storageService);
   final statsRepo = StatsRepositoryImpl(storage: storageService);
+  final bodyRepo = BodyCultivationRepositoryImpl();
 
   runApp(
     MultiProvider(
@@ -31,6 +34,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => MissionProvider(repository: missionRepo),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => BodyCultivationProvider(repository: bodyRepo),
         ),
         ChangeNotifierProvider(
           create: (_) => SettingsProvider(storage: storageService),

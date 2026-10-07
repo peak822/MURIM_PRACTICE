@@ -14,6 +14,7 @@ class HiveStorageService {
   late Box<Map> _missionsBox;
   late Box<Map> _userStatsBox;
   late Box<Map> _logsBox;
+  late Box<Map> _recordsBox;
   late Box<dynamic> _settingsBox;
 
   bool _isInitialized = false;
@@ -27,6 +28,7 @@ class HiveStorageService {
       _missionsBox = await Hive.openBox<Map>(AppConstants.missionsBoxName);
       _userStatsBox = await Hive.openBox<Map>(AppConstants.userStatsBoxName);
       _logsBox = await Hive.openBox<Map>(AppConstants.cultivationLogsBoxName);
+      _recordsBox = await Hive.openBox<Map>(AppConstants.trainingRecordsBoxName);
       _settingsBox = await Hive.openBox<dynamic>(AppConstants.settingsBoxName);
 
       _isInitialized = true;
@@ -197,6 +199,7 @@ class HiveStorageService {
     await _missionsBox.clear();
     await _userStatsBox.clear();
     await _logsBox.clear();
+    await _recordsBox.clear();
     await _seedInitialData();
     await _settingsBox.put('has_seeded_initial_data', true);
   }

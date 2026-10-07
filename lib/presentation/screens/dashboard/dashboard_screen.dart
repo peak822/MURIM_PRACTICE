@@ -16,11 +16,13 @@ import 'widgets/stat_progress_card.dart';
 /// DashboardScreen / หอฝึกตน (Cultivation Pagoda)
 class DashboardScreen extends StatefulWidget {
   final VoidCallback? onNavigateToMissions;
+  final VoidCallback? onNavigateToBodyCultivation;
   final VoidCallback? onNavigateToMeditation;
 
   const DashboardScreen({
     super.key,
     this.onNavigateToMissions,
+    this.onNavigateToBodyCultivation,
     this.onNavigateToMeditation,
   });
 
@@ -329,16 +331,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               Expanded(
                 child: WuxiaButton(
-                  text: 'ทำเทียบภารกิจ ($pendingCount)',
+                  text: 'ภารกิจ ($pendingCount)',
                   icon: Icons.checklist_rounded,
                   style: WuxiaButtonStyle.gold,
                   onPressed: widget.onNavigateToMissions,
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Expanded(
                 child: WuxiaButton(
-                  text: 'ปิดด่านสมาธิ',
+                  text: 'บ่มเพาะกาย',
+                  icon: Icons.fitness_center_rounded,
+                  style: WuxiaButtonStyle.crimson,
+                  onPressed: widget.onNavigateToBodyCultivation,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: WuxiaButton(
+                  text: 'สมาธิ',
                   icon: Icons.self_improvement_rounded,
                   style: WuxiaButtonStyle.jade,
                   onPressed: widget.onNavigateToMeditation,

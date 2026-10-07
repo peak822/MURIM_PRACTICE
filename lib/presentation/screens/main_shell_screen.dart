@@ -5,6 +5,7 @@ import 'package:murim_app/core/theme/app_text_styles.dart';
 import 'package:murim_app/presentation/providers/cultivation_provider.dart';
 import 'chronicle/chronicle_screen.dart';
 import 'dashboard/dashboard_screen.dart';
+import 'body_cultivation/body_cultivation_screen.dart';
 import 'meditation/meditation_screen.dart';
 import 'missions/missions_screen.dart';
 import 'settings/settings_screen.dart';
@@ -34,9 +35,11 @@ class _MainShellScreenState extends State<MainShellScreen> {
     final screens = [
       DashboardScreen(
         onNavigateToMissions: () => _onTabSelected(1),
-        onNavigateToMeditation: () => _onTabSelected(2),
+        onNavigateToBodyCultivation: () => _onTabSelected(2),
+        onNavigateToMeditation: () => _onTabSelected(3),
       ),
       const MissionsScreen(),
+      const BodyCultivationScreen(),
       const MeditationScreen(),
       const ChronicleScreen(),
       const SettingsScreen(),
@@ -204,6 +207,11 @@ class _MainShellScreenState extends State<MainShellScreen> {
                           label: Text('เทียบภารกิจ'),
                         ),
                         NavigationRailDestination(
+                          icon: Icon(Icons.fitness_center_outlined),
+                          selectedIcon: Icon(Icons.fitness_center_rounded),
+                          label: Text('บ่มเพาะกาย'),
+                        ),
+                        NavigationRailDestination(
                           icon: Icon(Icons.self_improvement_outlined),
                           selectedIcon: Icon(Icons.self_improvement_rounded),
                           label: Text('ปิดด่านสมาธิ'),
@@ -262,6 +270,10 @@ class _MainShellScreenState extends State<MainShellScreen> {
                       BottomNavigationBarItem(
                         icon: Icon(Icons.checklist_rounded),
                         label: 'เทียบภารกิจ',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.fitness_center_rounded),
+                        label: 'บ่มเพาะกาย',
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(Icons.self_improvement_rounded),
